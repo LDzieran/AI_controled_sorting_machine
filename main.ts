@@ -1,24 +1,57 @@
 input.onButtonPressed(Button.A, function () {
-    strip = PlanetX_Display.create(PlanetX_Display.DigitalRJPin.J1, 8, PlanetX_Display.NeoPixelMode.RGB)
-    strip.showColor(PlanetX_Display.colors(PlanetX_Display.NeoPixelColors.White))
-    neZha.setMotorSpeed(neZha.MotorList.M1, 75)
+    neZha.setMotorSpeed(neZha.MotorList.M1, -50)
 })
 input.onButtonPressed(Button.B, function () {
-    strip = PlanetX_Display.create(PlanetX_Display.DigitalRJPin.J1, 8, PlanetX_Display.NeoPixelMode.RGB)
     neZha.stopAllMotor()
-    strip.showColor(PlanetX_Display.colors(PlanetX_Display.NeoPixelColors.Black))
 })
-let strip: PlanetX_Display.Strip = null
+let strip = PlanetX_Display.create(PlanetX_Display.DigitalRJPin.J1, 8, PlanetX_Display.NeoPixelMode.RGB)
+strip.showColor(PlanetX_Display.colors(PlanetX_Display.NeoPixelColors.White))
+neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 90)
+basic.pause(1000)
+neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 145)
+basic.pause(1000)
+neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 90)
 PlanetX_AILens.initModule()
 PlanetX_AILens.switchfunc(PlanetX_AILens.FuncList.Ball)
 basic.showIcon(IconNames.Asleep)
 basic.forever(function () {
-    PlanetX_AILens.cameraImage()
     if (PlanetX_AILens.ballColor(PlanetX_AILens.ballColorList.Red)) {
-        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 45)
-        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 45)
+        basic.showLeds(`
+            . . # . .
+            . # . . .
+            # . # # #
+            . # . . .
+            . . # . .
+            `)
+        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 145)
+        basic.pause(1000)
+        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 90)
+        basic.pause(1000)
+        basic.clearScreen()
+    } else if (PlanetX_AILens.ballColor(PlanetX_AILens.ballColorList.Blue)) {
+        basic.showLeds(`
+            . . # . .
+            . . . # .
+            # # # . #
+            . . . # .
+            . . # . .
+            `)
+        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 35)
+        basic.pause(1000)
+        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 90)
+        basic.pause(1000)
+        basic.clearScreen()
+    } else {
+        basic.showLeds(`
+            . # # # .
+            # # . . #
+            # . # . #
+            # . . # #
+            . # # # .
+            `)
+        neZha.setServoAngel(neZha.ServoTypeList._360, neZha.ServoList.S1, 90)
     }
-    if (PlanetX_AILens.ballColor(PlanetX_AILens.ballColorList.Blue)) {
-    	
-    }
+})
+loops.everyInterval(100, function () {
+    PlanetX_AILens.cameraImage()
 })
